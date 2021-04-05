@@ -1,10 +1,11 @@
-int n = 12;
-float d = 30;
+int n = 3;
+float d = 100;
 color[] c = {color(0,0,255), color(0,255,0), color(255,0,0),
              color(0,255,255), color(255,0,255), color(255,255,0)};
 
 void setup() {
   size(900, 900);
+  background(255,255,255);
   noLoop();
 }
 
@@ -44,6 +45,13 @@ void calcCenters(ArrayList<HexCircle> cen, float center_x, float center_y, float
   }
 }
 
+void calcCenters2(ArrayList<HexCircle> cen, float center_x, float center_y, float d) {
+  // element 0 (center)
+  cen.add( new HexCircle(center_x, center_y, d, 0) );
+  
+  
+}  
+
 void draw() {
   float center_x = width/2;
   float center_y = height/2;
@@ -70,7 +78,8 @@ class HexCircle {
   }
   
   void display() {
-    fill(c[dist_from_center % c.length]);
+    //fill(c[dist_from_center % c.length]);
+    noFill();
     ellipse(x,y,d,d);
   }
 }
