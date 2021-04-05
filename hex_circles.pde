@@ -51,8 +51,7 @@ void draw() {
   ArrayList<HexCircle> cen = new ArrayList<HexCircle>();
   
   calcCenters(cen, center_x, center_y, d);
-   //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
-  for (HexCircle c : cen) {
+  for (HexCircle c : cen) { //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
     c.display();
   }
 }
