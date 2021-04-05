@@ -3,48 +3,111 @@ void setup() {
   noLoop();
 }
 
+void calcCenters(ArrayList<HexCircle> cen, float center_x, float center_y, float d) {
+  
+  // element 0 (center)
+  cen.add( new HexCircle(center_x, center_y, d, 0) );
+  
+  for (int i=1; i <= 6; i=i+1) {
+    for (int j=0; j < 6; j=j+1) {
+      float x = center_x + float(i)*d*cos(float(j)/6*TWO_PI);
+      float y = center_y + float(i)*d*sin(float(j)/6*TWO_PI);
+      cen.add(new HexCircle(x,y,d,i));
+    }
+    float p1_x = cen.get(cen.size()-6).x;
+    float p1_y = cen.get(cen.size()-6).y;
+    float p2_x = cen.get(cen.size()-5).x;
+    float p2_y = cen.get(cen.size()-5).y;
+    float p3_x = cen.get(cen.size()-4).x;
+    float p3_y = cen.get(cen.size()-4).y;
+    float dif_x = p1_x - p2_x;
+    float dif_y = p1_y - p2_y;
+    float dif_xh = p2_x - p3_x;
+    float dif_yh = p2_y - p3_y;
+    for (int k=1; k <= i-1; k=k+1) {
+      float new_x = p1_x - (float(k)/float(i))*dif_x;
+      float new_y = p1_y - (float(k)/float(i))*dif_y;
+      cen.add(new HexCircle(new_x,new_y,d,i));
+      cen.add(new HexCircle(2*center_x - new_x, new_y,d,i));
+      cen.add(new HexCircle(2*center_x - new_x, 2*center_y - new_y,d,i));
+      cen.add(new HexCircle(new_x, 2*center_y - new_y,d,i));
+      float new_xh = p2_x - (float(k)/float(i))*dif_xh;
+      float new_yh = p2_y - (float(k)/float(i))*dif_yh;
+      cen.add(new HexCircle(new_xh, new_yh,d,i));
+      cen.add(new HexCircle(new_xh, 2*center_y - new_yh,d,i));
+    }
+  }
+}
+
 void draw() {
   float center_x = width/2;
   float center_y = height/2;
   float d = 50;
 
-  ArrayList<PVector> cen = new ArrayList<PVector>();
+  ArrayList<HexCircle> cen = new ArrayList<HexCircle>();
+  
+  calcCenters(cen, center_x, center_y, d);
 
   // element 0 (center)
-  cen.add(new PVector(center_x, center_y));
+  //cen.add(new HexCircle(center_x, center_y, d, 0));
 
-  for (int i=1; i <= 6; i=i+1) {
-    for (int j=0; j < 6; j=j+1) {
-      float x = center_x + float(i)*d*cos(float(j)/6*TWO_PI);
-      float y = center_y + float(i)*d*sin(float(j)/6*TWO_PI);
-      cen.add(new PVector(x,y));
-    }
-    float p1_x = cen.get(cen.size()-6).x; //<>//
-    float p1_y = cen.get(cen.size()-6).y; //<>//
-    float p2_x = cen.get(cen.size()-5).x; //<>//
-    float p2_y = cen.get(cen.size()-5).y; //<>//
-    float p3_x = cen.get(cen.size()-4).x;
-    float p3_y = cen.get(cen.size()-4).y;
-    float dif_x = p1_x - p2_x; //<>//
-    float dif_y = p1_y - p2_y; //<>//
-    float dif_xh = p2_x - p3_x;
-    float dif_yh = p2_y - p3_y;
-    for (int k=1; k <= i-1; k=k+1) { //<>//
-      float new_x = p1_x - (float(k)/float(i))*dif_x; //<>//
-      float new_y = p1_y - (float(k)/float(i))*dif_y; //<>//
-      cen.add(new PVector(new_x, new_y));
-      cen.add(new PVector(2*center_x - new_x, new_y));
-      cen.add(new PVector(2*center_x - new_x, 2*center_y - new_y));
-      cen.add(new PVector(new_x, 2*center_y - new_y));
-      float new_xh = p2_x - (float(k)/float(i))*dif_xh;
-      float new_yh = p2_y - (float(k)/float(i))*dif_yh;
-      cen.add(new PVector(new_xh, new_yh));
-      cen.add(new PVector(new_xh, 2*center_y - new_yh));
-    }
+  //for (int i=1; i <= 6; i=i+1) {
+  //  for (int j=0; j < 6; j=j+1) {
+  //    float x = center_x + float(i)*d*cos(float(j)/6*TWO_PI);
+  //    float y = center_y + float(i)*d*sin(float(j)/6*TWO_PI);
+  //    cen.add(new HexCircle(x,y,d,i));
+  //  }
+  //  float p1_x = cen.get(cen.size()-6).x; //<>//
+  //  float p1_y = cen.get(cen.size()-6).y; //<>//
+  //  float p2_x = cen.get(cen.size()-5).x; //<>//
+  //  float p2_y = cen.get(cen.size()-5).y; //<>//
+  //  float p3_x = cen.get(cen.size()-4).x;
+  //  float p3_y = cen.get(cen.size()-4).y;
+  //  float dif_x = p1_x - p2_x; //<>//
+  //  float dif_y = p1_y - p2_y; //<>//
+  //  float dif_xh = p2_x - p3_x;
+  //  float dif_yh = p2_y - p3_y;
+  //  for (int k=1; k <= i-1; k=k+1) { //<>//
+  //    float new_x = p1_x - (float(k)/float(i))*dif_x; //<>//
+  //    float new_y = p1_y - (float(k)/float(i))*dif_y; //<>//
+  //    cen.add(new HexCircle(new_x,new_y,d,i));
+  //    cen.add(new HexCircle(2*center_x - new_x, new_y,d,i));
+  //    cen.add(new HexCircle(2*center_x - new_x, 2*center_y - new_y,d,i));
+  //    cen.add(new HexCircle(new_x, 2*center_y - new_y,d,i));
+  //    float new_xh = p2_x - (float(k)/float(i))*dif_xh;
+  //    float new_yh = p2_y - (float(k)/float(i))*dif_yh;
+  //    cen.add(new HexCircle(new_xh, new_yh,d,i));
+  //    cen.add(new HexCircle(new_xh, 2*center_y - new_yh,d,i));
+  //  }
+  //}
+
+  for (HexCircle c : cen) {
+    c.display();
   }
+}
 
-  for (PVector c : cen) {
-    println(c);
-    ellipse(c.x, c.y, d, d);
+class HexCircle {
+  float x=0;
+  float y=0;
+  float d=0;
+  int dist_from_center=0;
+  
+  HexCircle(float x_in, float y_in, float d_in, int dist_in) {
+    this.x = x_in;
+    this.y = y_in;
+    this.d = d_in;
+    this.dist_from_center = dist_in;
+  }
+  
+  float getX() {
+    return x;
+  }
+  
+  float getY() {
+    return y;
+  }
+  
+  void display() {
+    ellipse(x,y,d,d);
   }
 }
