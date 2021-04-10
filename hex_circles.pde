@@ -1,4 +1,6 @@
-int n = 6;
+import java.util.Collections;
+
+int n = 5;
 float d = 50;
 float center_x, center_y;
 ArrayList<HexCircle> cen;
@@ -15,6 +17,8 @@ void setup() {
   center_y = height/2;
   cen = new ArrayList<HexCircle>();
   calcCenters(cen, center_x, center_y, d);
+  calcAngles(cen);
+  Collections.sort(cen);
   count = cen.size();
   println("Number of circles: ", count);
 }
@@ -62,11 +66,32 @@ void calcCenters2(ArrayList<HexCircle> cen, float center_x, float center_y, floa
   
 }  
 
+void calcAngles(ArrayList<HexCircle> cen) {
+  for (int i=1; i < cen.size(); i++) {
+    HexCircle c = cen.get(i);
+    float x1 = d/2.0;
+    float y1 = 0;
+    float x2 = c.x - center_x;
+    float y2 = c.y - center_y;
+    float dot_product = x1*x2 + y1*y2;
+    float l1 = sqrt(x1*x1 + y1*y1);
+    float l2 = sqrt(x2*x2 + y2*y2);
+    float cos_calc = dot_product/(l1*l2);
+    float acos_calc = acos(cos_calc);
+    
+    if (y2 < 0) {
+      acos_calc = TWO_PI - acos_calc;
+    }
+    println(x2, y2, cos_calc, acos_calc);
+    c.setAngle(acos_calc);
+  }
+}
+
 void draw() {
   background(230,230,230);
   
   if (draw_iter == count) {
-    delay(2000);
+    delay(3000);
     draw_iter = 0;
   }
   for (int i=0; i <= draw_iter; i++) { //<>//
@@ -76,10 +101,11 @@ void draw() {
   draw_iter++;
 }
 
-class HexCircle {
+public class HexCircle implements Comparable<HexCircle> {
   float x=0;
   float y=0;
   float d=0;
+  float rad = 0;
   int dist_from_center=0;
   
   HexCircle(float x_in, float y_in, float d_in, int dist_in) {
@@ -94,5 +120,33 @@ class HexCircle {
     //noFill();
     //stroke(c[dist_from_center % c.length]);
     ellipse(x,y,d,d);
+  }
+  
+  void setAngle(float a) {
+    this.rad = a;
+  }
+  
+  @Override
+  public int compareTo(HexCircle hc){
+     /* 
+      * Sorting by last name. compareTo should return < 0 if this(keyword) 
+      * is supposed to be less than au, > 0 if this is supposed to be 
+      * greater than object au and 0 if they are supposed to be equal.
+     */
+     int comp = 0;
+     if (this.dist_from_center < hc.dist_from_center) {
+       comp = -1;
+     } else if (this.dist_from_center > hc.dist_from_center) {
+       comp = 1;
+     } else if (this.dist_from_center == hc.dist_from_center) {
+       if (this.rad < hc.rad) {
+         comp = -1;
+       } else if (this.rad > hc.rad) {
+         comp = 1;
+       } else if (this.rad == hc.rad) {
+         comp = 0;
+       }
+     }
+     return comp;
   }
 }
