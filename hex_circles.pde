@@ -66,6 +66,7 @@ void draw() {
   background(230,230,230);
   
   if (draw_iter == count) {
+    delay(2000);
     draw_iter = 0;
   }
   for (int i=0; i <= draw_iter; i++) { //<>//
