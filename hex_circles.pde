@@ -1,12 +1,22 @@
-int n = 3;
-float d = 100;
-color[] c = {color(0,0,255), color(0,255,0), color(255,0,0),
-             color(0,255,255), color(255,0,255), color(255,255,0)};
+int n = 6;
+float d = 50;
+float center_x, center_y;
+ArrayList<HexCircle> cen;
+int count = 0;
+int draw_iter = 0;
+color[] c = {color(150,47,88), color(92,51,82), color(220,220,220),
+             color(187,187,187), color(144,144,144)};
 
 void setup() {
   size(900, 900);
-  background(255,255,255);
-  noLoop();
+  background(230,230,230);
+  
+  center_x = width/2;
+  center_y = height/2;
+  cen = new ArrayList<HexCircle>();
+  calcCenters(cen, center_x, center_y, d);
+  count = cen.size();
+  println("Number of circles: ", count);
 }
 
 void calcCenters(ArrayList<HexCircle> cen, float center_x, float center_y, float d) {
@@ -53,15 +63,16 @@ void calcCenters2(ArrayList<HexCircle> cen, float center_x, float center_y, floa
 }  
 
 void draw() {
-  float center_x = width/2;
-  float center_y = height/2;
-
-  ArrayList<HexCircle> cen = new ArrayList<HexCircle>();
+  background(230,230,230);
   
-  calcCenters(cen, center_x, center_y, d);
-  for (HexCircle c : cen) { //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
-    c.display();
+  if (draw_iter == count) {
+    draw_iter = 0;
   }
+  for (int i=0; i <= draw_iter; i++) { //<>//
+    cen.get(i).display();
+  }
+  delay(60);
+  draw_iter++;
 }
 
 class HexCircle {
@@ -78,8 +89,9 @@ class HexCircle {
   }
   
   void display() {
-    //fill(c[dist_from_center % c.length]);
-    noFill();
+    fill(c[dist_from_center % c.length]);
+    //noFill();
+    //stroke(c[dist_from_center % c.length]);
     ellipse(x,y,d,d);
   }
 }
