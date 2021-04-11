@@ -1,13 +1,14 @@
 import java.util.Collections;
 
-int n = 5;
-float d = 50;
+int n = 4;
+float d = 60;
 float center_x, center_y;
 ArrayList<HexCircle> cen;
 int count = 0;
 int draw_iter = 0;
 color[] c = {color(150,47,88), color(92,51,82), color(220,220,220),
              color(187,187,187), color(144,144,144)};
+int frame_pause = 60;
 
 void setup() {
   size(900, 900);
@@ -59,12 +60,14 @@ void calcCenters(ArrayList<HexCircle> cen, float center_x, float center_y, float
   }
 }
 
+/*
 void calcCenters2(ArrayList<HexCircle> cen, float center_x, float center_y, float d) {
   // element 0 (center)
   cen.add( new HexCircle(center_x, center_y, d, 0) );
   
   
-}  
+} 
+*/
 
 void calcAngles(ArrayList<HexCircle> cen) {
   for (int i=1; i < cen.size(); i++) {
@@ -82,7 +85,6 @@ void calcAngles(ArrayList<HexCircle> cen) {
     if (y2 < 0) {
       acos_calc = TWO_PI - acos_calc;
     }
-    println(x2, y2, cos_calc, acos_calc);
     c.setAngle(acos_calc);
   }
 }
@@ -97,7 +99,7 @@ void draw() {
   for (int i=0; i <= draw_iter; i++) { //<>//
     cen.get(i).display();
   }
-  delay(60);
+  delay(frame_pause);
   draw_iter++;
 }
 
@@ -128,11 +130,6 @@ public class HexCircle implements Comparable<HexCircle> {
   
   @Override
   public int compareTo(HexCircle hc){
-     /* 
-      * Sorting by last name. compareTo should return < 0 if this(keyword) 
-      * is supposed to be less than au, > 0 if this is supposed to be 
-      * greater than object au and 0 if they are supposed to be equal.
-     */
      int comp = 0;
      if (this.dist_from_center < hc.dist_from_center) {
        comp = -1;
