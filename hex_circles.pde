@@ -8,7 +8,7 @@ int count = 0;
 int draw_iter = 0;
 color[] c = {color(150,47,88), color(92,51,82), color(220,220,220),
              color(187,187,187), color(144,144,144)};
-int frame_pause = 60;
+int frame_pause = 50;
 
 void setup() {
   size(900, 900);
@@ -64,8 +64,6 @@ void calcCenters(ArrayList<HexCircle> cen, float center_x, float center_y, float
 void calcCenters2(ArrayList<HexCircle> cen, float center_x, float center_y, float d) {
   // element 0 (center)
   cen.add( new HexCircle(center_x, center_y, d, 0) );
-  
-  
 } 
 */
 
